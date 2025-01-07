@@ -1,7 +1,7 @@
-import "./App.css";
+import Body from "./component.js/Body";
 
 function App() {
-  return <div className="bg-pink-600">person</div>;
+  return <Body/>
 }
 
 export default App;
