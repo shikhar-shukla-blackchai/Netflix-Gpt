@@ -4,22 +4,13 @@
 - Configured TailwindCss
 - Header
 - Login Form
-
-# Features
-
-- Login/Sign Up
-  - Sign In/Sign up Form
-- Browse (after authentication)
-  - Header
-  - Main Movie
-    - Traler in Background
-    - Title & Description
-    - MovieSuggestions
-      - MovieLists \* N
-- NetflixGPT
-  - Search Bar
-  - Movie Suggestions
-
-# rafce
-
-- rafce : react arrow function export component
+- Sign UP form
+- Form validation
+- useRef Hook
+- Firebase Setup
+- Deploying our app to production
+- Creae SingUp User Account
+- Implement Sign In user Api
+- Created Redux Store with userSlice
+- Implemented Sign out
+- Update Profile

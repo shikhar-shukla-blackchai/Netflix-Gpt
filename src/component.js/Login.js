@@ -1,8 +1,90 @@
-import React, { useState } from "react";
-import Header from "./Header";
+import { useRef, useState } from "react";
+import { checkValidateData } from "../utils/validate";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { updateProfile } from "firebase/auth";
+
+import { auth } from "../utils/firebase";
+import { useNavigate } from "react-router-dom";
+import Logo from "./Logo";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
 const Login = () => {
-  const [isSiginForm, setIsSigInForm] = useState();
+  const [isSiginForm, setIsSigInForm] = useState(true);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
+  const name = useRef(null);
+  const email = useRef(null);
+  const password = useRef(null);
+
+  const handleButtonClick = () => {
+    const message = checkValidateData(
+      email.current?.value,
+      password.current?.value
+    );
+    setErrorMessage(message);
+    if (message) return;
+
+    if (!isSiginForm) {
+      createUserWithEmailAndPassword(
+        auth,
+        email.current?.value,
+        password.current?.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          updateProfile(user, {
+            displayName: name.current.value,
+            photoURL: "https://example.com/jane-q-user/profile.jpg",
+          })
+            .then(() => {
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
+              navigate("/browse");
+            })
+            .catch((error) => {
+              setErrorMessage(error.message);
+            });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Sign-up error:", errorCode, errorMessage); // Debugging: Check error details
+          setErrorMessage(errorCode + " - " + errorMessage);
+        });
+    } else {
+      signInWithEmailAndPassword(
+        auth,
+        email.current?.value,
+        password.current?.value
+      )
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("User signed in:", user); // Debugging: Check the user object
+          navigate("/browse");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.error("Sign-in error:", errorCode, errorMessage); // Debugging: Check error details
+          setErrorMessage(errorCode + " - " + errorMessage);
+        });
+    }
+  };
 
   const toggleSignInForm = () => {
     setIsSigInForm(!isSiginForm);
@@ -10,16 +92,17 @@ const Login = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4">
-      <Header />
+      <Logo />
       <div className="absolute w-full max-w-md bg-black/75 p-8 rounded-md shadow-lg">
         <h1 className="text-3xl font-bold text-white mb-6">
           {" "}
           {isSiginForm ? " Sign In" : "Sign Up"}
         </h1>
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           {!isSiginForm && (
             <div>
               <input
+                ref={name}
                 type="text"
                 placeholder="Full Name"
                 className="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -28,6 +111,7 @@ const Login = () => {
           )}
           <div>
             <input
+              ref={email}
               type="email"
               placeholder="Email or phone number"
               className="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
@@ -35,14 +119,17 @@ const Login = () => {
           </div>
           <div>
             <input
+              ref={password}
               type="password"
               placeholder="Password"
               className="w-full bg-gray-700 text-white placeholder-gray-400 px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
+          <p className="text-red-800 font-semibold text-xl">{errorMessage}</p>
           <button
             type="submit"
             className="w-full bg-red-600 text-white font-semibold py-3 rounded hover:bg-red-700 transition duration-300"
+            onClick={handleButtonClick}
           >
             {isSiginForm ? " Sign In" : "Sign Up"}
           </button>
@@ -52,9 +139,7 @@ const Login = () => {
             <input type="checkbox" className="mr-2 accent-gray-500" />
             Remember me
           </label>
-          <a href="#" className="hover:underline">
-            Need help?
-          </a>
+          Need help?
         </div>
         <div className="mt-6 text-gray-400 text-sm">
           <p
@@ -67,10 +152,7 @@ const Login = () => {
           </p>
           <p className="text-xs mt-2">
             This page is protected by Google reCAPTCHA to ensure you're not a
-            bot.{" "}
-            <a href="#" className="text-blue-500 hover:underline">
-              Learn more.
-            </a>
+            bot. Learn more.
           </p>
         </div>
       </div>
