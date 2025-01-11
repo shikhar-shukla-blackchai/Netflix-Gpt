@@ -7,18 +7,16 @@ import {
 import { updateProfile } from "firebase/auth";
 
 import { auth } from "../utils/firebase";
-import { useNavigate } from "react-router-dom";
-import Logo from "./Logo";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import Header from "./Header";
+import { USER_AVATER } from "../utils/constant";
 
 const Login = () => {
   const [isSiginForm, setIsSigInForm] = useState(true);
   const [errorMessage, setErrorMessage] = useState(null);
 
   const dispatch = useDispatch();
-
-  const navigate = useNavigate();
 
   const name = useRef(null);
   const email = useRef(null);
@@ -42,7 +40,7 @@ const Login = () => {
           const user = userCredential.user;
           updateProfile(user, {
             displayName: name.current.value,
-            photoURL: "https://example.com/jane-q-user/profile.jpg",
+            photoURL: USER_AVATER,
           })
             .then(() => {
               const { uid, email, displayName, photoURL } = auth.currentUser;
@@ -54,7 +52,6 @@ const Login = () => {
                   photoURL: photoURL,
                 })
               );
-              navigate("/browse");
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -74,8 +71,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log("User signed in:", user); // Debugging: Check the user object
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -92,7 +87,7 @@ const Login = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4">
-      <Logo />
+      <Header />
       <div className="absolute w-full max-w-md bg-black/75 p-8 rounded-md shadow-lg">
         <h1 className="text-3xl font-bold text-white mb-6">
           {" "}
