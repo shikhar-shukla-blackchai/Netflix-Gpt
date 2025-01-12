@@ -60,7 +60,6 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.error("Sign-up error:", errorCode, errorMessage); // Debugging: Check error details
           setErrorMessage(errorCode + " - " + errorMessage);
         });
     } else {
@@ -75,7 +74,6 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.error("Sign-in error:", errorCode, errorMessage); // Debugging: Check error details
           setErrorMessage(errorCode + " - " + errorMessage);
         });
     }

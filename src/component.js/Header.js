@@ -4,12 +4,16 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { addUser, removeUser } from "../utils/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { LOGO } from "../utils/constant";
+import { LOGO, SUPPORTED_LANGUAGES } from "../utils/constant";
+import { toggleGptSearchView } from "../utils/gptSlice";
+import { changeLanguage } from "../utils/configSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
+
+  const showGptSearch = useSelector((store) => store.gpt.showGptSearch);
 
   const handleSignOut = () => {
     signOut(auth)
@@ -40,6 +44,14 @@ const Header = () => {
     return () => unsubscribe();
   }, [dispatch, navigate]);
 
+  const handleGptSearchClick = () => {
+    dispatch(toggleGptSearchView());
+  };
+
+  const handleLanguageChange = (e) => {
+    dispatch(changeLanguage(e.target.value));
+  };
+
   return (
     <header className="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-gradient-to-b from-black to-transparent z-50">
       {/* Netflix Logo */}
@@ -52,32 +64,25 @@ const Header = () => {
         />
       </div>
 
-      {/* Navigation Menu */}
-      {user && (
-        <nav className="hidden md:flex space-x-6 text-white">
-          {["Home", "TV Shows", "Movies", "New & Popular", "My List"].map(
-            (item) => (
-              <a
-                key={item}
-                href={`/${item
-                  .toLowerCase()
-                  .replace(/ & /g, "-")
-                  .replace(/ /g, "")}`}
-                className="hover:text-gray-300 transition-colors"
-              >
-                {item}
-              </a>
-            )
-          )}
-        </nav>
-      )}
-
-      {/* Profile and Sign-Out */}
       {user && (
         <div className="flex items-center space-x-4">
-          {/* Search Icon */}
+          {showGptSearch && (
+            <select
+              className="p-2 bg-gray-900 text-white "
+              onClick={handleLanguageChange}
+            >
+              {SUPPORTED_LANGUAGES.map((lang) => (
+                <option key={lang.identifer} value={lang.identifer}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          )}
           <button
-            className="text-white hover:text-gray-300 transition-colors"
+            onClick={handleGptSearchClick}
+            className={
+              "text-white hover:text-gray-300 transition-colors flex bg-purple-800 rounded-lg py-2  my-2 px-4"
+            }
             aria-label="Search"
           >
             <svg
@@ -94,6 +99,7 @@ const Header = () => {
                 d="M11 19a8 8 0 100-16 8 8 0 000 16zm0 0l6 6"
               />
             </svg>
+            {showGptSearch ? "Homepage" : "GPT Search"}
           </button>
 
           {/* User Profile Picture */}
@@ -103,13 +109,13 @@ const Header = () => {
               "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
             }
             alt="User Profile"
-            className="w-8 h-8 rounded cursor-pointer"
+            className="w-9 h-9 rounded cursor-pointer"
             onClick={() => navigate("/profile")}
           />
 
           {/* Sign-Out Button */}
           <button
-            className="text-white px-3 py-1 rounded bg-red-600 hover:bg-red-700 transition-colors"
+            className="text-white px-4 py-2 rounded bg-red-600 hover:bg-red-700 transition-colors"
             onClick={handleSignOut}
           >
             Sign Out

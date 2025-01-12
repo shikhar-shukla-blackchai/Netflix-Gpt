@@ -21,14 +21,11 @@ const useMovieTrailer = (movieId) => {
       const trailer = json.results?.find((video) => video.type === "Trailer");
 
       if (!trailer) {
-        console.warn(`No trailer found for movie ID: ${movieId}`);
         return;
       }
 
       dispatch(addTrailerVideo(trailer));
-    } catch (error) {
-      console.error("Error fetching movie trailer:", error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
