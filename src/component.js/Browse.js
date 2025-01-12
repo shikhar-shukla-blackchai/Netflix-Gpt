@@ -2,25 +2,23 @@ import Header from "./Header";
 import useNowPlayingMovies from "../Hooks/useNowPlayingMovies";
 import MainContainer from "./MainContainer";
 import SecondaryContainer from "./SecondaryContainer";
+import usePopularMovies from "../Hooks/usePopularMovies";
+import useUpcomingMovies from "../Hooks/useUpcomingMovies";
+import useTvAiringToday from "../Hooks/useTvAiringToday";
+import useTvTopRated from "../Hooks/useTvTopRated";
 
 const Browse = () => {
+  useTvTopRated();
   useNowPlayingMovies();
+  usePopularMovies();
+  useUpcomingMovies();
+  useTvAiringToday();
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-black text-white min-h-screen overflow-x-hidden">
       <Header />
       <MainContainer />
       <SecondaryContainer />
-      {/*
-       * MainContainer
-       *   - videoBackground
-       *   - VideoTitle
-       *   - play button
-       *   - More Info
-       * SecondaryContainer
-       *   - MovieList * n
-       *   - cards * n
-       */}
     </div>
   );
 };

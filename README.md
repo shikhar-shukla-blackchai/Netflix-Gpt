@@ -26,3 +26,24 @@
 - Fetch Data for Trailer Video
 - Embedded the youtube video and make it autoplay and mute
 - Tailwind Classes to make Main Container Look awesome
+- Build Secondary Component
+- Build Movie List
+- Build Movie Card
+- TMDB Image CDN URL
+- Made the Browse page amazing with Tailwind CSS
+- usePopularMovies Custom hook
+
+# Features
+
+- Login/Sign Up
+  - Sign In/Sign up Form
+- Browse (after authentication)
+  - Header
+  - Main Movie
+    - Trailer in Background
+    - Title & Description
+    - MovieSuggestions
+      - MovieLists \* N
+- NetflixGPT
+  - Search Bar
+  - Movie Suggestions
