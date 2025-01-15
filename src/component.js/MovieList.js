@@ -1,18 +1,51 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import MovieCard from "./MovieCard";
 
 const MovieList = ({ title, movies }) => {
   const scrollContainerRef = useRef(null);
+  const [showRightButton, setShowRightButton] = useState(false);
+  const [showLeftButton, setShowLeftButton] = useState(false);
 
   const handleScroll = (direction) => {
     if (scrollContainerRef.current) {
-      const scrollAmount = direction === "left" ? -300 : 300; // Adjust scroll distance as needed
+      const scrollAmount = direction === "left" ? -200 : 200;
       scrollContainerRef.current.scrollBy({
         left: scrollAmount,
         behavior: "smooth",
       });
     }
   };
+
+  useEffect(() => {
+    const containerRef = scrollContainerRef.current;
+
+    const handleScrollEnd = () => {
+      if (!containerRef) return;
+
+      const containerWidth = containerRef.scrollWidth;
+      const visibleWidth = containerRef.clientWidth;
+      const scrollLeft = containerRef.scrollLeft;
+
+      setShowLeftButton(scrollLeft > 0);
+      setShowRightButton(containerWidth > visibleWidth + scrollLeft);
+    };
+
+    const handleMouseEnter = () => {
+      handleScrollEnd();
+    };
+
+    if (containerRef) {
+      containerRef.addEventListener("scroll", handleScrollEnd);
+      containerRef.addEventListener("mouseenter", handleMouseEnter);
+    }
+
+    return () => {
+      if (containerRef) {
+        containerRef.removeEventListener("scroll", handleScrollEnd);
+        containerRef.removeEventListener("mouseenter", handleMouseEnter);
+      }
+    };
+  }, [movies]);
 
   return (
     <div className="relative">
@@ -23,7 +56,9 @@ const MovieList = ({ title, movies }) => {
       >
         <button
           onClick={() => handleScroll("left")}
-          className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full"
+          className={`absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full ${
+            !showLeftButton && "hidden"
+          }`}
         >
           &#8249;
         </button>
@@ -34,7 +69,9 @@ const MovieList = ({ title, movies }) => {
         </div>
         <button
           onClick={() => handleScroll("right")}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full"
+          className={`absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full ${
+            !showRightButton && "hidden"
+          }`}
         >
           &#8250;
         </button>

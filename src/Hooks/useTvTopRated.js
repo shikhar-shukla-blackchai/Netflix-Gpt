@@ -1,10 +1,12 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { API_OPTIONS } from "../utils/constant";
 import { addTvTopRated } from "../utils/moviesSlice";
 import { useEffect } from "react";
 
 const useTvTopRated = () => {
   const dispatch = useDispatch();
+
+  const tvTopRated = useSelector((store) => store.movies.TvTopRated);
 
   const getTvTopRated = async () => {
     const data = await fetch(
@@ -16,7 +18,7 @@ const useTvTopRated = () => {
   };
 
   useEffect(() => {
-    getTvTopRated();
+    !tvTopRated && getTvTopRated();
   }, []);
 };
 export default useTvTopRated;

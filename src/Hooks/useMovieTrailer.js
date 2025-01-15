@@ -1,10 +1,12 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { API_OPTIONS } from "../utils/constant";
 import { addTrailerVideo } from "../utils/moviesSlice";
 import { useEffect } from "react";
 
 const useMovieTrailer = (movieId) => {
   const dispatch = useDispatch();
+
+  const nowPlayingMovies = useSelector((store) => store.movies.trailerVideo);
 
   const getMovieTrailer = async () => {
     try {
@@ -18,6 +20,7 @@ const useMovieTrailer = (movieId) => {
       }
 
       const json = await response.json();
+      console.log("json bg", json);
       const trailer = json.results?.find((video) => video.type === "Trailer");
 
       if (!trailer) {
@@ -29,10 +32,9 @@ const useMovieTrailer = (movieId) => {
   };
 
   useEffect(() => {
-    getMovieTrailer();
-  }, [movieId]); // Dependency array to trigger refetch on movieId change
-
-  return; // No need to explicitly return anything from a React hook
+    !nowPlayingMovies && getMovieTrailer();
+  }, [movieId]);
+  return;
 };
 
 export default useMovieTrailer;

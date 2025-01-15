@@ -12,9 +12,9 @@ const MainContainer = () => {
   const { original_title, overview, id } = mainMovie;
 
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative h-screen overflow-hidden">
       <VideoBackground movieId={id} />
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black z-10" />
       <VideoTitle title={original_title} overview={overview} />
     </div>
   );
