@@ -13,9 +13,7 @@ const GptSearchBar = () => {
 
   const searchMovieTmdb = async (movie) => {
     const data = await fetch(
-      "https://api.themoviedb.org/3/search/movie?query=" +
-        movie +
-        "&include_adult=false&language=en-US&page=1",
+      `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`,
       API_OPTIONS
     );
     const json = await data.json();
@@ -33,7 +31,6 @@ const GptSearchBar = () => {
       });
 
       const getMovies = getResult?.choices[0]?.message?.content.split(",");
-      console.log(getMovies);
 
       const promiseArray = getMovies.map((movie) => searchMovieTmdb(movie)); //[pro..1,pro..2,pro..3,pro..4,pro..5]
 
@@ -53,7 +50,7 @@ const GptSearchBar = () => {
   return (
     <div className="pt-40 flex justify-center">
       <form
-        className="w-1/2 bg-gray-900 rounded-lg overflow-hidden relative"
+        className="w-full md:w-1/2 bg-gray-900 rounded-lg overflow-hidden relative"
         onSubmit={(e) => e.preventDefault()}
       >
         <svg
@@ -73,7 +70,7 @@ const GptSearchBar = () => {
         <input
           ref={searchText}
           type="text"
-          className="p-4 pl-14 w-full bg-gray-800 text-white focus:outline-none relative z-10"
+          className="p-4 md:pl-14 w-full bg-gray-800 text-white focus:outline-none relative z-10 "
           placeholder={lang[langkey].placeHolder}
         />
         <button

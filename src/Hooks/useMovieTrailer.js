@@ -20,7 +20,6 @@ const useMovieTrailer = (movieId) => {
       }
 
       const json = await response.json();
-      console.log("json bg", json);
       const trailer = json.results?.find((video) => video.type === "Trailer");
 
       if (!trailer) {

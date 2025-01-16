@@ -53,7 +53,7 @@ const Header = () => {
   };
 
   return (
-    <header className="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-gradient-to-b from-black to-transparent z-50">
+    <header className="absolute top-0 left-0 w-full flex items-center justify-between px-8 py-4 bg-gradient-to-b from-black to-transparent z-50 flex-col md:flex-row ">
       {/* Netflix Logo */}
       <div className="w-36">
         <img
@@ -65,7 +65,7 @@ const Header = () => {
       </div>
 
       {user && (
-        <div className="flex items-center space-x-4">
+        <div className="flex md:items-center justify-between space-x-4">
           {showGptSearch && (
             <select
               className="p-2 bg-gray-900 text-white "
@@ -81,7 +81,7 @@ const Header = () => {
           <button
             onClick={handleGptSearchClick}
             className={
-              "text-white hover:text-gray-300 transition-colors flex bg-purple-800 rounded-lg py-2  my-2 px-4"
+              "text-white hover:text-gray-300 transition-colors flex bg-purple-800 rounded-lg py-2 md:py-1 px-4" // Added md:py-1 for mobile compatibility
             }
             aria-label="Search"
           >
@@ -109,13 +109,13 @@ const Header = () => {
               "https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png"
             }
             alt="User Profile"
-            className="w-9 h-9 rounded cursor-pointer"
+            className="w-9 h-9 rounded cursor-pointer hidden md:block"
             onClick={() => navigate("/profile")}
           />
 
           {/* Sign-Out Button */}
           <button
-            className="text-white px-4 py-2 rounded bg-red-600 hover:bg-red-700 transition-colors"
+            className="text-white md:px-4 md:py-2 rounded md:bg-red-600 md:hover:bg-red-700 transition-colors text-nowrap"
             onClick={handleSignOut}
           >
             Sign Out
