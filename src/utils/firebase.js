@@ -8,22 +8,17 @@ import { getAuth } from "firebase/auth";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDWBsOKjjS_hsZVO89TdQ-fNf_qVbbydWA",
-  authDomain: "netflix-gpt-dbd8d.firebaseapp.com",
-  projectId: "netflix-gpt-dbd8d",
-  storageBucket: "netflix-gpt-dbd8d.firebasestorage.app",
-  messagingSenderId: "747087045921",
-  appId: "1:747087045921:web:6bec7c9487765fc6e24a60",
-  measurementId: "G-YGQQ5ELR8E",
+  apiKey: "AIzaSyAKu8uX1kN5iK5FPg3_TKKYSCXQv6LYf48",
+  authDomain: "netfilx-gpt-57207.firebaseapp.com",
+  projectId: "netfilx-gpt-57207",
+  storageBucket: "netfilx-gpt-57207.firebasestorage.app",
+  messagingSenderId: "313927727332",
+  appId: "1:313927727332:web:4c8a020ea653dac74e54f1",
+  measurementId: "G-FKK4TKKP07",
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
-// npm install -g firebase-tools
-// firebase login
-// firebase init
-// firebase deploy
 
 export const auth = getAuth();
